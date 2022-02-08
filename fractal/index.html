@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1"
+/>
+<!--viewport-fit=cover"-->
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="header">Line Fractal Generator</div>
+    <div class="content">
+      <div class="main">
+        <div id="fractalArea">
+          <canvas id="offScreenCanvas"></canvas>
+          <canvas id="mainCanvas"></canvas>
+        </div>
+      </div>
+      <div class="left">
+        <label for="Depth">Depth:</label>
+        <br />
+        <input id="Depth" type="number" step="1" value="3" min="1" max="100" />
+        <br />
+        <label for="RefreshRate">Refresh Rate:</label>
+        <br />
+        <input
+          id="RefreshRate"
+          type="number"
+          step="1"
+          value="30"
+          min="1"
+          max="1000"
+        />
+        <br />
+        <label for="DrawAllLines">Draw All Lines:</label>
+        <br />
+        <input id="DrawAllLines" , type="checkbox" />
+        <br />
+        <label for="LargeControls">Large Controls:</label>
+        <br />
+        <input id="LargeControls" , type="checkbox" />
+        <br />
+        <label for="HideControls">Hide Controls:</label>
+        <br />
+        <input id="HideControls" , type="checkbox" />
+        <br />
+        <input id="StartStop" type="button" value="Start/Stop" />
+        <br />
+        <input id="ResetZoom" type="button" value="Reset Zoom" />
+        <br />
+        <label for="ChoosePreset">Choose a Preset:</label>
+        <br />
+        <select name="ChoosePreset" id="ChoosePreset"></select>
+        <br />
+      </div>
+    </div>
+  </body>
+</html>
+
+<script type="module" src="./main.js"></script>
