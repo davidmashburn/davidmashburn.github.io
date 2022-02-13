@@ -1,10 +1,12 @@
-import {cloneLine, mirrorLine} from "./helpers.js"
+import { cloneLine, mirrorLine } from "./helpers.js";
 
 class Generator {
-  constructor(lines,
+  constructor(
+    lines,
     isMirror = false,
     generators = undefined,
-    mirror = undefined) {
+    mirror = undefined
+  ) {
     this.lines = lines.map(cloneLine);
     this.isMirror = isMirror;
     this.generators = generators;
@@ -23,17 +25,15 @@ class Generator {
         this
       );
     }
-
-    this.resetMirror = function () {
-      this.mirror.lines = this.lines.map(mirrorLine);
-      this.mirror.isMirror = !this.isMirror;
-      this.mirror.generators = this.generators.map((g) => g.mirror);
-    };
-
-    this.setGenerators = function (generators) {
-      this.generators = generators;
-      this.mirror.generators = this.generators.map((g) => g.mirror);
-    };
+  }
+  resetMirror() {
+    this.mirror.lines = this.lines.map(mirrorLine);
+    this.mirror.isMirror = !this.isMirror;
+    this.mirror.generators = this.generators.map((g) => g.mirror);
+  }
+  setGenerators(generators) {
+    this.generators = generators;
+    this.mirror.generators = this.generators.map((g) => g.mirror);
   }
 }
 
@@ -52,4 +52,47 @@ function generatorFromData(data) {
   return generator;
 }
 
-export { Generator, generatorFromData };
+function getPointsFromGenerator(generator, linePointIndexes) {
+  const maxIndex = Math.max(
+    ...linePointIndexes.map((i) => Math.max(i.start, i.end))
+  );
+  const newPointArrays = [...Array(maxIndex + 1).keys()].map((x) => []); // make array of empty arrays
+  for (const [i, line] of generator.lines.entries()) {
+    const pointIndexes = linePointIndexes[i];
+    newPointArrays[pointIndexes.start].push(line.start);
+    newPointArrays[pointIndexes.end].push(line.end);
+  }
+  const newPoints = newPointArrays.map((pointArray) => pointArray[0]);
+  return newPoints;
+}
+
+function generatorDataEqual(a, b, tol = 1e-10) {
+  if (a.lines.length != b.lines.length) {
+    return false;
+  }
+  if (a.points.length != b.points.length) {
+    return false;
+  }
+  for (let i = 0; i < a.lines.length; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (a.lines[i][j] != b.lines[i][j]) {
+        return false;
+      }
+    }
+  }
+  for (let i = 0; i < a.points.length; i++) {
+    for (let j = 0; j < 2; j++) {
+      if (Math.abs(a.points[i][j] - b.points[i][j]) > tol) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+export {
+  Generator,
+  generatorFromData,
+  getPointsFromGenerator,
+  generatorDataEqual,
+};
